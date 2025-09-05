@@ -1,0 +1,203 @@
+{
+  "name": "archway-elite-analyzer",
+  "productName": "Archway Elite Analyzer",
+  "version": "1.0.0",
+  "description": "Professional network analysis solution by EVMG Technologies",
+  "main": "main.js",
+  "homepage": "https://evmg.tech",
+  "author": {
+    "name": "EVMG Technologies",
+    "email": "support@evmg.tech",
+    "url": "https://evmg.tech"
+  },
+  "license": "Proprietary",
+  "scripts": {
+    "start": "electron .",
+    "dev": "NODE_ENV=development electron .",
+    "build": "electron-builder",
+    "build:win": "electron-builder --win",
+    "build:linux": "electron-builder --linux",
+    "build:mac": "electron-builder --mac",
+    "dist": "npm run build",
+    "pack": "electron-builder --dir",
+    "postinstall": "electron-builder install-app-deps"
+  },
+  "keywords": [
+    "network",
+    "analyzer",
+    "wifi",
+    "security",
+    "monitoring",
+    "professional",
+    "enterprise"
+  ],
+  "build": {
+    "appId": "com.evmg.archway",
+    "productName": "Archway Elite Analyzer",
+    "copyright": "Copyright © 2025 EVMG Technologies. All rights reserved.",
+    "directories": {
+      "output": "dist",
+      "buildResources": "assets"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "assets/**/*",
+      "dist/**/*",
+      "node_modules/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "../archway_backend",
+        "to": "backend",
+        "filter": [
+          "**/*",
+          "!**/__pycache__/**/*",
+          "!**/*.pyc",
+          "!**/node_modules/**/*"
+        ]
+      }
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "assets/icons/icon.ico",
+      "publisherName": "EVMG Technologies",
+      "verifyUpdateCodeSignature": false,
+      "requestedExecutionLevel": "asInvoker"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Archway Elite Analyzer",
+      "installerIcon": "assets/icons/icon.ico",
+      "uninstallerIcon": "assets/icons/icon.ico",
+      "installerHeaderIcon": "assets/icons/icon.ico",
+      "deleteAppDataOnUninstall": false,
+      "runAfterFinish": true,
+      "menuCategory": "EVMG Technologies"
+    },
+    "portable": {
+      "artifactName": "ArchwayEliteAnalyzer-${version}-portable.exe"
+    },
+    "linux": {
+      "target": [
+        {
+          "target": "AppImage",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "deb",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "rpm",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "tar.gz",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "assets/icons",
+      "category": "Network",
+      "synopsis": "Professional network analysis solution",
+      "description": "Archway Elite Analyzer is a comprehensive network analysis tool designed for security professionals, network engineers, and IT administrators. Developed by EVMG Technologies.",
+      "desktop": {
+        "Name": "Archway Elite Analyzer",
+        "Comment": "Professional network analysis solution by EVMG Technologies",
+        "Keywords": "network;analyzer;wifi;security;monitoring;professional;enterprise;",
+        "Categories": "Network;System;Security;",
+        "StartupNotify": "true",
+        "MimeType": "application/x-archway-project;"
+      }
+    },
+    "deb": {
+      "packageCategory": "net",
+      "priority": "optional"
+    },
+    "rpm": {
+      "packageCategory": "Applications/Internet"
+    },
+    "appImage": {
+      "artifactName": "ArchwayEliteAnalyzer-${version}.AppImage"
+    },
+    "mac": {
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        },
+        {
+          "target": "zip",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        }
+      ],
+      "icon": "assets/icons/icon.icns",
+      "category": "public.app-category.developer-tools",
+      "bundleVersion": "1.0.0",
+      "minimumSystemVersion": "10.14.0"
+    },
+    "dmg": {
+      "title": "Archway Elite Analyzer ${version}",
+      "artifactName": "ArchwayEliteAnalyzer-${version}.dmg",
+      "iconSize": 100,
+      "contents": [
+        {
+          "x": 380,
+          "y": 280,
+          "type": "link",
+          "path": "/Applications"
+        },
+        {
+          "x": 110,
+          "y": 280,
+          "type": "file"
+        }
+      ],
+      "window": {
+        "width": 540,
+        "height": 380
+      }
+    }
+  },
+  "devDependencies": {
+    "electron": "^38.0.0",
+    "electron-builder": "^26.0.12",
+    "electron-reload": "^2.0.0-alpha.1"
+  },
+  "dependencies": {
+    "electron-updater": "^6.6.2"
+  }
+}

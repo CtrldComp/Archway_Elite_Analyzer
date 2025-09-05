@@ -1,0 +1,157 @@
+name: Build Desktop Applications
+
+on:
+  push:
+    branches: [ main, develop ]
+    tags: [ 'v*' ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        cache-dependency-path: |
+          frontend/package-lock.json
+          desktop/package-lock.json
+          
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+        
+    - name: Install frontend dependencies
+      run: |
+        cd frontend
+        npm ci
+        
+    - name: Build frontend
+      run: |
+        cd frontend
+        npm run build
+        
+    - name: Install backend dependencies
+      run: |
+        cd backend
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        
+    - name: Install desktop dependencies
+      run: |
+        cd desktop
+        npm ci
+        
+    - name: Copy frontend build to desktop
+      run: |
+        cp -r frontend/dist desktop/
+        
+    - name: Build desktop application (Linux)
+      if: matrix.os == 'ubuntu-latest'
+      run: |
+        cd desktop
+        npm run build:linux
+        
+    - name: Build desktop application (Windows)
+      if: matrix.os == 'windows-latest'
+      run: |
+        cd desktop
+        npm run build:win
+        
+    - name: Build desktop application (macOS)
+      if: matrix.os == 'macos-latest'
+      run: |
+        cd desktop
+        npm run build:mac
+        
+    - name: Upload Linux artifacts
+      if: matrix.os == 'ubuntu-latest'
+      uses: actions/upload-artifact@v3
+      with:
+        name: linux-packages
+        path: |
+          desktop/dist/*.AppImage
+          desktop/dist/*.deb
+          desktop/dist/*.rpm
+          desktop/dist/*.tar.gz
+          
+    - name: Upload Windows artifacts
+      if: matrix.os == 'windows-latest'
+      uses: actions/upload-artifact@v3
+      with:
+        name: windows-packages
+        path: |
+          desktop/dist/*.exe
+          
+    - name: Upload macOS artifacts
+      if: matrix.os == 'macos-latest'
+      uses: actions/upload-artifact@v3
+      with:
+        name: macos-packages
+        path: |
+          desktop/dist/*.dmg
+          desktop/dist/*.zip
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Download all artifacts
+      uses: actions/download-artifact@v3
+      
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          linux-packages/*
+          windows-packages/*
+          macos-packages/*
+        body: |
+          ## Archway Elite Analyzer ${{ github.ref_name }}
+          
+          Professional network analysis solution by EVMG Technologies.
+          
+          ### Downloads
+          
+          #### Windows
+          - **Installer**: `ArchwayEliteAnalyzer-Setup-*.exe`
+          - **Portable**: `ArchwayEliteAnalyzer-*-portable.exe`
+          
+          #### Linux
+          - **AppImage**: `ArchwayEliteAnalyzer-*.AppImage` (Universal)
+          - **Debian/Ubuntu**: `archway-elite-analyzer_*_amd64.deb`
+          - **Red Hat/Fedora**: `archway-elite-analyzer-*.x86_64.rpm`
+          
+          #### macOS
+          - **DMG Installer**: `ArchwayEliteAnalyzer-*.dmg`
+          - **ZIP Archive**: `ArchwayEliteAnalyzer-*-mac.zip`
+          
+          ### Installation
+          
+          See the [README.md](https://github.com/CtrldComp/Archway_Elite_Analyzer#installation) for detailed installation instructions.
+          
+          ---
+          
+          **EVMG Technologies** - *A Controlled Compromise LTD subsidiary*
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+

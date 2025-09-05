@@ -1,0 +1,14 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Archway Elite Analyzer
+Comment=Professional network analysis solution by EVMG Technologies
+Exec=archway-elite-analyzer %U
+Icon=archway-elite-analyzer
+StartupNotify=true
+Categories=Network;System;Security;
+Keywords=network;analyzer;wifi;security;monitoring;professional;enterprise;
+MimeType=application/x-archway-project;
+Terminal=false
+StartupWMClass=Archway Elite Analyzer
+
