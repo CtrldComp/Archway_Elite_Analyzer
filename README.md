@@ -224,3 +224,6 @@ EVMG Technologies is a leading provider of elite network analysis solutions, spe
 
 <!-- Workflow trigger: Updated GitHub Actions to v4 - Testing automated builds -->
 
+
+<!-- Workflow trigger: Testing pnpm-lock.yaml fix - Should resolve ERR_PNPM_NO_LOCKFILE error -->
+
