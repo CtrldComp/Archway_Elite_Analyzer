@@ -233,3 +233,6 @@ EVMG Technologies is a leading provider of elite network analysis solutions, spe
 
 <!-- Workflow trigger: Testing Windows build debugging - Enhanced logging to identify electron-builder config issue -->
 
+
+<!-- Workflow trigger: Testing PowerShell compatibility fix - Windows should now use bash shell -->
+
