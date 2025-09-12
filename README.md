@@ -230,3 +230,6 @@ EVMG Technologies is a leading provider of elite network analysis solutions, spe
 
 <!-- Workflow trigger: Testing --no-frozen-lockfile fix - Should bypass ERR_PNPM_NO_LOCKFILE error -->
 
+
+<!-- Workflow trigger: Testing Windows build debugging - Enhanced logging to identify electron-builder config issue -->
+
