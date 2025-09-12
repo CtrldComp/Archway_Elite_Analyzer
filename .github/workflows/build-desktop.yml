@@ -82,6 +82,9 @@ jobs:
       run: |
         cd desktop
         npm run build:linux || echo "Linux build failed, continuing..."
+        echo "=== Checking build output ==="
+        ls -la dist/ || echo "No dist directory"
+        find . -name "*.AppImage" -o -name "*.deb" -o -name "*.rpm" -o -name "*.tar.gz" || echo "No Linux packages found"
         
     - name: Build desktop application (Windows)
       if: matrix.os == 'windows-latest'
@@ -96,12 +99,18 @@ jobs:
         ls -la assets/ || echo "No assets directory"
         echo "Starting Windows build..."
         npm run build:win || echo "Windows build failed, continuing..."
+        echo "=== Checking build output ==="
+        ls -la dist/ || echo "No dist directory after build"
+        find . -name "*.exe" || echo "No exe files found"
         
     - name: Build desktop application (macOS)
       if: matrix.os == 'macos-latest'
       run: |
         cd desktop
         npm run build:mac || echo "macOS build failed, continuing..."
+        echo "=== Checking build output ==="
+        ls -la dist/ || echo "No dist directory"
+        find . -name "*.dmg" -o -name "*.zip" || echo "No macOS packages found"
         
     - name: Upload Linux artifacts
       if: matrix.os == 'ubuntu-latest'
