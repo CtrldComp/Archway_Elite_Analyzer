@@ -6,7 +6,6 @@
   **Professional Network Analysis Solution**
   
   *Developed by EVMG Technologies*  
-  *A Controlled Compromise LTD subsidiary*
 
   [![License](https://img.shields.io/badge/License-Proprietary-red.svg)](LICENSE)
   [![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Linux%20%7C%20macOS-blue.svg)](#installation)
