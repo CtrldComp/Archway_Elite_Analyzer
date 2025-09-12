@@ -71,7 +71,11 @@ jobs:
     - name: Copy frontend build to desktop
       shell: bash
       run: |
-        cp -r frontend/dist desktop/ || echo "Frontend dist not found, skipping copy"
+        echo "Copying frontend build to desktop..."
+        ls -la frontend/dist/ || echo "Frontend dist not found"
+        mkdir -p desktop/dist
+        cp -r frontend/dist/* desktop/dist/ || echo "Frontend dist copy failed, continuing..."
+        ls -la desktop/dist/ || echo "Desktop dist verification failed"
         
     - name: Build desktop application (Linux)
       if: matrix.os == 'ubuntu-latest'
@@ -83,6 +87,13 @@ jobs:
       if: matrix.os == 'windows-latest'
       run: |
         cd desktop
+        echo "Verifying desktop directory contents..."
+        ls -la
+        echo "Verifying dist directory..."
+        ls -la dist/ || echo "No dist directory"
+        echo "Verifying assets directory..."
+        ls -la assets/ || echo "No assets directory"
+        echo "Starting Windows build..."
         npm run build:win || echo "Windows build failed, continuing..."
         
     - name: Build desktop application (macOS)
